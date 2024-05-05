@@ -1,9 +1,10 @@
-const Options = ({ updateFeedback }) => {
+const Options = ({ updateFeedback, resetFeedback }) => {
   const handleClick = (feedbackType) => {
     updateFeedback(feedbackType);
   };
+
   const handleResetClick = () => {
-    handleReset();
+    resetFeedback();
   };
 
   return (
