@@ -1,3 +1,4 @@
+import css from "./Options.module.css";
 const Options = ({ updateFeedback, resetFeedback }) => {
   const handleClick = (feedbackType) => {
     updateFeedback(feedbackType);
@@ -9,10 +10,21 @@ const Options = ({ updateFeedback, resetFeedback }) => {
 
   return (
     <div>
-      <button onClick={() => handleClick("good")}>Good</button>
-      <button onClick={() => handleClick("neutral")}>Neutral</button>
-      <button onClick={() => handleClick("bad")}>Bad</button>
-      <button onClick={handleResetClick}>Reset</button>
+      <button className={css.button_style} onClick={() => handleClick("good")}>
+        Good
+      </button>
+      <button
+        className={css.button_style}
+        onClick={() => handleClick("neutral")}
+      >
+        Neutral
+      </button>
+      <button className={css.button_style} onClick={() => handleClick("bad")}>
+        Bad
+      </button>
+      <button className={css.button_style} onClick={handleResetClick}>
+        Reset
+      </button>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import Notification from "../Notification/Notification";
+import css from "./Feedback.module.css";
 
 const Feedback = ({ feedback: { good, neutral, bad } }) => {
   const total = good + neutral + bad;
@@ -6,7 +7,7 @@ const Feedback = ({ feedback: { good, neutral, bad } }) => {
 
   return (
     <div>
-      <ul>
+      <ul className={css.feedback_list}>
         <li>Good: {good}</li>
         <li>Neutral: {neutral}</li>
         <li>Bad: {bad}</li>
