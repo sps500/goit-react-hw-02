@@ -3,50 +3,41 @@ import Description from "./Description/Description";
 import Options from "./Options/Options";
 import Feedback from "./Feedback/Feedback";
 import Notification from "./Notification/Notification";
-
 import { useState, useEffect } from "react";
 
 export default function App() {
-  const hasFeedbackData = localStorage.getItem("feedback") !== null;
-  const initialFeedback = JSON.parse(localStorage.getItem("feedback")) || {
+  const [feedback, setFeedback] = useState({
     good: 0,
     neutral: 0,
     bad: 0,
-  };
-  const [feedback, setFeedback] = useState(initialFeedback);
-  const [showFeedback, setShowFeedback] = useState(hasFeedbackData);
+  });
+
+  useEffect(() => {
+    localStorage.setItem("feedback", JSON.stringify(feedback));
+  }, [feedback]);
 
   const updateFeedback = (feedbackType) => {
-    setFeedback((prevFeedback) => {
-      const updatedFeedback = {
-        ...prevFeedback,
-        [feedbackType]: prevFeedback[feedbackType] + 1,
-      };
-      localStorage.setItem("feedback", JSON.stringify(updatedFeedback));
-      return updatedFeedback;
-    });
-    setShowFeedback(true); // Показати список статистики після оновлення відгуку
+    setFeedback((prevFeedback) => ({
+      ...prevFeedback,
+      [feedbackType]: prevFeedback[feedbackType] + 1,
+    }));
   };
 
   const resetFeedback = () => {
     const resetedFeedback = { good: 0, neutral: 0, bad: 0 };
     setFeedback(resetedFeedback);
-    localStorage.setItem("feedback", JSON.stringify(resetedFeedback));
-    setShowFeedback(false); // Приховати список статистики після скидання відгуку
   };
 
-  useEffect(() => {
-    const storedFeedback = JSON.parse(localStorage.getItem("feedback"));
-    if (storedFeedback) {
-      setFeedback(storedFeedback);
-    }
-  }, []);
+  const total = feedback.good + feedback.neutral + feedback.bad;
+  const positive = total ? Math.round((feedback.good / total) * 100) : 0;
 
   return (
     <div className={css.container}>
       <Description />
       <Options updateFeedback={updateFeedback} resetFeedback={resetFeedback} />
-      {showFeedback ? <Feedback feedback={feedback} /> : <Notification />}
+
+      {total > 0 && <Feedback feedback={{ ...feedback, total, positive }} />}
+      {total === 0 && <Notification />}
     </div>
   );
 }
