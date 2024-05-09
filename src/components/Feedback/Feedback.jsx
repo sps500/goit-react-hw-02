@@ -12,7 +12,8 @@ const Feedback = ({ feedback: { good, neutral, bad } }) => {
         <li>Bad: {bad}</li>
         <li>Total: {total}</li>
         <li>
-          Positive: {total ? isNaN(positive) ? 0 : positive : <Notification />}
+          Positive:{" "}
+          {total ? isNaN(positive) ? 0 : positive + "%" : <Notification />}
         </li>
       </ul>
     </div>

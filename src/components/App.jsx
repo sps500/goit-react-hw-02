@@ -1,19 +1,20 @@
 import Description from "./Description/Description";
 import Options from "./Options/Options";
 import Feedback from "./Feedback/Feedback";
+import Notification from "./Notification/Notification";
 
 import { useState, useEffect } from "react";
 
 export default function App() {
-  // Ініціалізація стану з локального сховища або нулями, якщо немає збережених даних
+  const hasFeedbackData = localStorage.getItem("feedback") !== null;
   const initialFeedback = JSON.parse(localStorage.getItem("feedback")) || {
     good: 0,
     neutral: 0,
     bad: 0,
   };
   const [feedback, setFeedback] = useState(initialFeedback);
+  const [showFeedback, setShowFeedback] = useState(hasFeedbackData);
 
-  // Функція для оновлення статистики та збереження її в локальному сховищі
   const updateFeedback = (feedbackType) => {
     setFeedback((prevFeedback) => {
       const updatedFeedback = {
@@ -23,16 +24,16 @@ export default function App() {
       localStorage.setItem("feedback", JSON.stringify(updatedFeedback));
       return updatedFeedback;
     });
+    setShowFeedback(true); // Показати список статистики після оновлення відгуку
   };
 
-  // Функція для скидання статистики та збереження її в локальному сховищі
   const resetFeedback = () => {
     const resetedFeedback = { good: 0, neutral: 0, bad: 0 };
     setFeedback(resetedFeedback);
     localStorage.setItem("feedback", JSON.stringify(resetedFeedback));
+    setShowFeedback(false); // Приховати список статистики після скидання відгуку
   };
 
-  // Ефект для завантаження статистики з локального сховища при першому завантаженні
   useEffect(() => {
     const storedFeedback = JSON.parse(localStorage.getItem("feedback"));
     if (storedFeedback) {
@@ -44,7 +45,7 @@ export default function App() {
     <div>
       <Description />
       <Options updateFeedback={updateFeedback} resetFeedback={resetFeedback} />
-      <Feedback feedback={feedback} />
+      {showFeedback ? <Feedback feedback={feedback} /> : <Notification />}
     </div>
   );
 }
