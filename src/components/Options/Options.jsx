@@ -1,34 +1,31 @@
 import css from "./Options.module.css";
-import { useState } from "react";
 
-const Options = ({ updateFeedback, resetFeedback }) => {
-  const [feedbackCount, setFeedbackCount] = useState(0);
-
-  const handleClick = (feedbackType) => {
-    updateFeedback(feedbackType);
-    setFeedbackCount((prevCount) => prevCount + 1);
-  };
-
+const Options = ({ totalFeedback, updateFeedback, resetFeedback }) => {
   const handleResetClick = () => {
     resetFeedback();
-    setFeedbackCount(0);
   };
 
   return (
     <div>
-      <button className={css.button_style} onClick={() => handleClick("good")}>
+      <button
+        className={css.button_style}
+        onClick={() => updateFeedback("good")}
+      >
         Good
       </button>
       <button
         className={css.button_style}
-        onClick={() => handleClick("neutral")}
+        onClick={() => updateFeedback("neutral")}
       >
         Neutral
       </button>
-      <button className={css.button_style} onClick={() => handleClick("bad")}>
+      <button
+        className={css.button_style}
+        onClick={() => updateFeedback("bad")}
+      >
         Bad
       </button>
-      {feedbackCount > 0 && (
+      {totalFeedback > 0 && (
         <button className={css.button_style} onClick={handleResetClick}>
           Reset
         </button>
