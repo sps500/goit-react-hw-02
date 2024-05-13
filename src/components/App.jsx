@@ -6,11 +6,14 @@ import Notification from "./Notification/Notification";
 import { useState, useEffect } from "react";
 
 export default function App() {
-  const [feedback, setFeedback] = useState({
+  const initialState = {
     good: 0,
     neutral: 0,
     bad: 0,
-  });
+  };
+  const [feedback, setFeedback] = useState(
+    () => JSON.parse(localStorage.getItem("feedback")) ?? initialState
+  );
 
   useEffect(() => {
     localStorage.setItem("feedback", JSON.stringify(feedback));
